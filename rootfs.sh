@@ -47,7 +47,7 @@ ln -s /bin/true /sbin/initctl
 
 apt upgrade -y
 
-apt install -y \
+apt install -y --install-recommends \
 sudo \
 casper \
 discover \
@@ -65,14 +65,14 @@ grub2-common \
 locales \
 nano 
 
-apt install -y --no-install-recommends --no-install-suggests \
+apt install -y --install-recommends \
 software-properties-common \
 gpg-agent \
 apt-transport-https
 
-apt install -y --no-install-recommends --no-install-suggests $KERNEL_PACKAGE
+apt install -y $KERNEL_PACKAGE
 
-apt install -y \
+apt install -y --install-recommends \
 ubiquity \
 ubiquity-casper \
 ubiquity-frontend-gtk \
