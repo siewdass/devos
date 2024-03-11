@@ -26,3 +26,6 @@ Kernel
 
 Shell
 - Zsh
+
+Font
+- Ubuntu font

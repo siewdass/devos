@@ -27,51 +27,44 @@ sudo chroot /tmp/rootfs mount none -t sysfs /sys
 sudo chroot /tmp/rootfs mount none -t devpts /dev/pts
 
 sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
-sudo cp -r ${CURRENT_DIR}/extensions /tmp/rootfs/tmp
 
+echo SET DEFAULT CONFIGURATIONS
 sudo chroot /tmp/rootfs << EOF
-
 export DEBIAN_FRONTEND=noninteractive
-
-apt update
-
 dbus-uuidgen > /etc/machine-id
 ln -fs /etc/machine-id /var/lib/dbus/machine-id
-
 dpkg-divert --local --rename --add /sbin/initctl
 ln -s /bin/true /sbin/initctl
+EOF
 
-apt install -y $INSTALL_PACKAGES
-apt remove -y $REMOVE_PACKAGES
+echo UPDATE REPOSITORIES
+sudo chroot /tmp/rootfs << EOF
+apt update > /dev/null
+EOF
 
-dpkg -i /tmp/packages/$NAME-desktop.deb
+echo INSTALL PACKAGES AND EXTENSIONS
+sudo chroot /tmp/rootfs << EOF
+export DISPLAY=:0
+apt install -y $INSTALL_PACKAGES > /dev/null
+apt remove -y $REMOVE_PACKAGES > /dev/null
+dpkg -i /tmp/packages/$NAME-desktop.deb > /dev/null
 apt install -fy
+EOF
 
-for F in /tmp/extensions/*; do
-	gnome-extensions install -f $F
+# REMOVE ALL EXTENSIONS FIRST
+for file in ${CURRENT_DIR}/extensions/*.zip; do
+    unzip "$file" -o -d /tmp/rootfs/usr/share/gnome-shell/extensions
 done
 
-for F in $(gnome-extensions list); do
-	gnome-extensions enable F
-done
-
-#gsettings set org.gnome.desktop.interface gtk-theme $SYSTEM_THEME
-#gsettings set org.gnome.desktop.interface icon-theme $ICON_THEME
-#gsettings set org.gnome.desktop.interface cursor-theme $CURSOR_THEME
-
+sudo chroot /tmp/rootfs << EOF
 apt autoremove -y
 apt autoclean -y
 apt clean -y
-
 truncate -s 0 /etc/machine-id
-
 rm /sbin/initctl
 dpkg-divert --rename --remove /sbin/initctl
-
 rm -rf /tmp/* /var/lib/apt/lists/* /var/cache/apt/archives/* ~/.bash_history
-
-find / -name "*.old" -delete
-
+find / -name "*.bak" -o -name "*.old" -delete
 EOF
 
 sudo chroot /tmp/rootfs umount /proc
@@ -122,7 +115,7 @@ chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
 }
 EOF
 
-sudo chroot /tmp/rootfs dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee /tmp/image/casper/filesystem.manifest
+sudo chroot /tmp/rootfs dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee /tmp/image/casper/filesystem.manifest 2>/dev/null
 sudo cp -v /tmp/image/casper/filesystem.manifest /tmp/image/casper/filesystem.manifest-desktop
 for pkg in $PACKAGE_REMOVE; do
     sudo sed -i "/$pkg/d" /tmp/image/casper/filesystem.manifest-desktop
@@ -137,7 +130,7 @@ sudo mksquashfs /tmp/rootfs /tmp/image/casper/filesystem.squashfs \
     -e "tmp/*" \
     -e "tmp/.*" \
     -e "swapfile"
-printf $(sudo du -sx --block-size=1 /tmp/rootfs | cut -f1) > /tmp/image/casper/filesystem.size
+echo $(sudo du -sx --block-size=1 /tmp/rootfs | cut -f1) > /tmp/image/casper/filesystem.size
 
 cat <<EOF > /tmp/image/README.diskdefines
 #define DISKNAME  ${GRUB_LIVEBOOT_LABEL}

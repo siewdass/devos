@@ -37,7 +37,9 @@ APT::Install-Suggests "false";
 " > /etc/apt/apt.conf.d/99recommended
 
 apt update
-apt install -y libterm-readline-gnu-perl systemd-sysv
+apt install -y \
+libterm-readline-gnu-perl \
+systemd-sysv
 
 dbus-uuidgen > /etc/machine-id
 ln -fs /etc/machine-id /var/lib/dbus/machine-id
@@ -47,12 +49,10 @@ ln -s /bin/true /sbin/initctl
 
 apt upgrade -y
 
-apt install -y --install-recommends \
+apt install -y \
 sudo \
 casper \
 discover \
-laptop-detect \
-os-prober \
 network-manager \
 resolvconf \
 net-tools \
@@ -63,9 +63,9 @@ grub-pc \
 grub-pc-bin \
 grub2-common \
 locales \
-nano 
+nano
 
-apt install -y --install-recommends \
+apt install -y \
 software-properties-common \
 gpg-agent \
 apt-transport-https
@@ -73,11 +73,9 @@ apt-transport-https
 apt install -y $KERNEL_PACKAGE
 
 apt install -y --install-recommends \
-ubiquity \
-ubiquity-casper \
 ubiquity-frontend-gtk \
 ubiquity-slideshow-ubuntu \
-ubiquity-ubuntu-artwork
+ubiquity-ubuntu-artwork 
 
 dpkg-reconfigure locales
 dpkg-reconfigure resolvconf
