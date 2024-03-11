@@ -6,7 +6,7 @@ CURRENT_DIR="$(pwd)"
 
 rm -rf $NAME-desktop.deb
 
-mkdir -p /tmp/meta/DEBIAN
+mkdir -p /tmp/meta/DEBIAN /tmp/meta/usr/share/glib-2.0/schemas
 
 EXTENSIONS="["
 cd ${CURRENT_DIR}/extensions &&
