@@ -32,13 +32,17 @@ Description: ${NAME^} Meta Package" > /tmp/meta/DEBIAN/control
 echo "[org.gnome.desktop.interface]
 gtk-theme = '$SYSTEM_THEME'
 icon-theme = '$ICON_THEME'
-cursor_theme = '$CURSOR_THEME'
+cursor-theme = '$CURSOR_THEME'
 
 [org.gnome.shell]
 enabled-extensions = $EXTENSIONS
+favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop' ]
 
 [org.gnome.shell.extensions.user-theme]
-name = '$SYSTEM_THEME'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
+name = '$SYSTEM_THEME'
+
+[org.gnome.desktop.wm.preferences]
+button-layout = 'close,minimize,maximize:'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
 
 dpkg-deb -Z xz -b /tmp/meta ${CURRENT_DIR}/packages/$NAME-desktop.deb > /dev/null
 

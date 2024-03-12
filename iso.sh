@@ -50,10 +50,10 @@ apt remove -y $REMOVE_PACKAGES > /dev/null
 dpkg -i /tmp/packages/$NAME-desktop.deb > /dev/null
 apt install -fy
 EOF
-
+# REMOVE UBUNTU-MONO
 # REMOVE ALL EXTENSIONS FIRST
 for file in ${CURRENT_DIR}/extensions/*.zip; do
-    unzip "$file" -o -d /tmp/rootfs/usr/share/gnome-shell/extensions
+    unzip -o "$file" -d /tmp/rootfs/usr/share/gnome-shell/extensions > /dev/null
 done
 
 sudo chroot /tmp/rootfs << EOF
