@@ -28,6 +28,8 @@ sudo chroot /tmp/rootfs mount none -t devpts /dev/pts
 
 sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
 
+sudo rm -rf /tmp/rootfs/usr/share/glib-2.0/schemas/*
+
 echo SET DEFAULT CONFIGURATIONS
 sudo chroot /tmp/rootfs << EOF
 export DEBIAN_FRONTEND=noninteractive
@@ -50,8 +52,10 @@ apt remove -y $REMOVE_PACKAGES > /dev/null
 dpkg -i /tmp/packages/$NAME-desktop.deb > /dev/null
 apt install -fy
 EOF
+
 # REMOVE UBUNTU-MONO
 # REMOVE ALL EXTENSIONS FIRST
+sudo rm -rf /tmp/rootfs/usr/share/gnome-shell/extensions/*
 for file in ${CURRENT_DIR}/extensions/*.zip; do
     unzip -o "$file" -d /tmp/rootfs/usr/share/gnome-shell/extensions > /dev/null
 done

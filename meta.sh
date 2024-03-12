@@ -33,6 +33,7 @@ echo "[org.gnome.desktop.interface]
 gtk-theme = '$SYSTEM_THEME'
 icon-theme = '$ICON_THEME'
 cursor-theme = '$CURSOR_THEME'
+font-name = 'Ubuntu 11'
 
 [org.gnome.shell]
 enabled-extensions = $EXTENSIONS
@@ -41,8 +42,11 @@ favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop' ]
 [org.gnome.shell.extensions.user-theme]
 name = '$SYSTEM_THEME'
 
+[org.gnome.tweaks]
+show-extensions-notice = true
+
 [org.gnome.desktop.wm.preferences]
-button-layout = 'close,minimize,maximize:'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
+button-layout = ':minimize,maximize,close'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
 
 dpkg-deb -Z xz -b /tmp/meta ${CURRENT_DIR}/packages/$NAME-desktop.deb > /dev/null
 
