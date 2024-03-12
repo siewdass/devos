@@ -6,16 +6,15 @@ CURRENT_DIR="$(pwd)"
 
 rm -rf $NAME-desktop.deb
 
-mkdir -p /tmp/meta/DEBIAN /tmp/meta/usr/share/glib-2.0/schemas /tmp/meta/usr/share/gtksourceview-2.0/styles
+mkdir -p /tmp/meta/DEBIAN /tmp/meta/usr/share/glib-2.0/schemas /tmp/meta/usr/share/gtksourceview-4/styles
 
 EXTENSIONS="["
 cd ${CURRENT_DIR}/extensions &&
 for filename in *; do
-  if [ "$EXTENSIONS" == "[" ]; then
-		EXTENSIONS+="'${filename::-4}'"
-	else
-		EXTENSIONS+=", '${filename::-4}'"
+  if [ "$EXTENSIONS" != "[" ]; then
+		EXTENSIONS+=", "
 	fi
+	EXTENSIONS+="'${filename::-4}'"
 done
 EXTENSIONS+="]"
 
@@ -35,21 +34,27 @@ icon-theme = '$ICON_THEME'
 cursor-theme = '$CURSOR_THEME'
 font-name = 'Ubuntu 11'
 
+[org.gnome.desktop.default-applications.terminal]
+exec='tilix'
+
+[org.gnome.mutter:GNOME-Classic]
+dynamic-workspaces=false
+
 [org.gnome.shell]
 enabled-extensions = $EXTENSIONS
-favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop' ]
+favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop', 'google-chrome.desktop' ]
 
 [org.gnome.shell.extensions.user-theme]
 name = '$SYSTEM_THEME'
 
-[org.gnome.tweaks]
-show-extensions-notice = true
-
 [org.gnome.gedit.preferences.editor]
 scheme = 'Arc-Dark'
 
+[org.gnome.desktop.peripherals.touchpad]
+click-method = 'areas'
+
 [org.gnome.desktop.wm.preferences]
-button-layout = ':minimize,maximize,close'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
+button-layout = 'appmenu:minimize,maximize,close'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
 
 echo '<?xml version="1.0" encoding="UTF-8"?>
 
@@ -196,7 +201,7 @@ echo '<?xml version="1.0" encoding="UTF-8"?>
     <style name="t2t:verbatim-block"          line-background="#lightgrey"/>
     <style name="t2t:comment"                 foreground="#008000"/>
     <style name="t2t:option"                  foreground="#008000"/>
-</style-scheme>' > /tmp/meta/usr/share/gtksourceview-2.0/styles/Arc-Dark.xml
+</style-scheme>' > /tmp/meta/usr/share/gtksourceview-4/styles/Arc-Dark.xml
 
 dpkg-deb -Z xz -b /tmp/meta ${CURRENT_DIR}/packages/$NAME-desktop.deb > /dev/null
 

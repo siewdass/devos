@@ -25,7 +25,11 @@ Kernel
 - Low Latency for Desktop
 
 Shell
-- Zsh
+- Zsh with OhMyZsh
+
+Default Applications
+- Tilix
+- Nautilus
 
 Font
 - Ubuntu font
