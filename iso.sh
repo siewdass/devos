@@ -28,7 +28,7 @@ sudo chroot /tmp/rootfs mount none -t devpts /dev/pts
 
 sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
 
-sudo rm -rf /tmp/rootfs/usr/share/glib-2.0/schemas/*
+#sudo rm -rf /tmp/rootfs/usr/share/glib-2.0/schemas/*
 
 echo SET DEFAULT CONFIGURATIONS
 sudo chroot /tmp/rootfs << EOF
@@ -44,21 +44,30 @@ sudo chroot /tmp/rootfs << EOF
 apt update > /dev/null
 EOF
 
-echo INSTALL PACKAGES AND EXTENSIONS
+echo INSTALL PACKAGES
 sudo chroot /tmp/rootfs << EOF
 export DISPLAY=:0
 apt install -y $INSTALL_PACKAGES > /dev/null
 apt remove -y $REMOVE_PACKAGES > /dev/null
-dpkg -i /tmp/packages/$NAME-desktop.deb > /dev/null
+
+dpkg -i /tmp/packages/*.deb
 apt install -fy
+
 EOF
 
 # REMOVE UBUNTU-MONO
 # REMOVE ALL EXTENSIONS FIRST
+echo "INSTALL EXTENSIONS"
 sudo rm -rf /tmp/rootfs/usr/share/gnome-shell/extensions/*
 for file in ${CURRENT_DIR}/extensions/*.zip; do
-    unzip -o "$file" -d /tmp/rootfs/usr/share/gnome-shell/extensions > /dev/null
+  unzip -o "$file" -d /tmp/rootfs/usr/share/gnome-shell/extensions > /dev/null
 done
+
+for d in /tmp/rootfs/usr/share/gnome-shell/extensions/*/; do
+  find ${d::-1} -name \*.xml -exec cp {} /tmp/rootfs/usr/share/glib-2.0/schemas \;
+done
+
+sudo glib-compile-schemas /tmp/rootfs/usr/share/glib-2.0/schemas
 
 sudo chroot /tmp/rootfs << EOF
 apt autoremove -y

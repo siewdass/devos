@@ -29,3 +29,6 @@ Shell
 
 Font
 - Ubuntu font
+
+Removed
+- Snapd
