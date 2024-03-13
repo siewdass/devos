@@ -34,5 +34,8 @@ Default Applications
 Font
 - Ubuntu font
 
+Peripheral
+- Disable natural scrolling
+
 Removed
 - Snapd

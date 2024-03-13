@@ -27,8 +27,7 @@ sudo chroot /tmp/rootfs mount none -t sysfs /sys
 sudo chroot /tmp/rootfs mount none -t devpts /dev/pts
 
 sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
-
-#sudo rm -rf /tmp/rootfs/usr/share/glib-2.0/schemas/*
+sudo cp -r ${CURRENT_DIR}/extensions /tmp/rootfs/tmp
 
 echo SET DEFAULT CONFIGURATIONS
 sudo chroot /tmp/rootfs << EOF
@@ -46,29 +45,24 @@ EOF
 
 echo INSTALL PACKAGES
 sudo chroot /tmp/rootfs << EOF
-export DISPLAY=:0
 apt install -y $INSTALL_PACKAGES > /dev/null
 apt remove -y $REMOVE_PACKAGES > /dev/null
-
 dpkg -i /tmp/packages/*.deb
 apt install -fy
-
 EOF
 
 # REMOVE UBUNTU-MONO
 # REMOVE ALL EXTENSIONS FIRST
+
 echo "INSTALL EXTENSIONS"
-sudo rm -rf /tmp/rootfs/usr/share/gnome-shell/extensions/*
-for file in ${CURRENT_DIR}/extensions/*.zip; do
-  unzip -o "$file" -d /tmp/rootfs/usr/share/gnome-shell/extensions > /dev/null
-done
+sudo chroot /tmp/rootfs << EOF
+rm -rf /usr/share/gnome-shell/extensions/*
+find /tmp/extensions -name "*.zip" -exec unzip -o {} -d /usr/share/gnome-shell/extensions \;
+find /usr/share/gnome-shell/extensions -name "*.xml" -exec cp {} /usr/share/glib-2.0/schemas \;
+glib-compile-schemas /usr/share/glib-2.0/schemas
+EOF
 
-for d in /tmp/rootfs/usr/share/gnome-shell/extensions/*/; do
-  find ${d::-1} -name \*.xml -exec cp {} /tmp/rootfs/usr/share/glib-2.0/schemas \;
-done
-
-sudo glib-compile-schemas /tmp/rootfs/usr/share/glib-2.0/schemas
-
+echo "CLEAN UP"
 sudo chroot /tmp/rootfs << EOF
 apt autoremove -y
 apt autoclean -y
@@ -128,7 +122,7 @@ chainloader (loop,gpt1)/efi/boot/BOOTX64.efi
 }
 EOF
 
-sudo chroot /tmp/rootfs dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee /tmp/image/casper/filesystem.manifest 2>/dev/null
+sudo chroot /tmp/rootfs dpkg-query -W --showformat='${Package} ${Version}\n' | sudo tee > /tmp/image/casper/filesystem.manifest
 sudo cp -v /tmp/image/casper/filesystem.manifest /tmp/image/casper/filesystem.manifest-desktop
 for pkg in $PACKAGE_REMOVE; do
     sudo sed -i "/$pkg/d" /tmp/image/casper/filesystem.manifest-desktop

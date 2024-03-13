@@ -41,6 +41,8 @@ exec='tilix'
 dynamic-workspaces=false
 
 [org.gnome.shell]
+always-show-log-out=true
+disable-extension-version-validation=true
 enabled-extensions = $EXTENSIONS
 favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop', 'google-chrome.desktop' ]
 
@@ -48,17 +50,32 @@ favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop', 'g
 name = '$SYSTEM_THEME'
 
 [org.gnome.gedit.preferences.editor]
-scheme = 'Arc-Dark'
+scheme = 'arc-dark'
+tabs-size = 4
+display-line-numbers = false
+
+[org.gnome.gedit.preferences.ui]
+statusbar-visible = false
 
 [org.gnome.desktop.peripherals.touchpad]
 click-method = 'areas'
+natural-scroll = false
+
+[org.gnome.desktop.peripherals.mouse]
+natural-scroll = false
+
+[org.gnome.nautilus.preferences]
+default-sort-order = 'type'
+
+[org.gtk.Settings.FileChooser]
+sort-directories-first = true
 
 [org.gnome.desktop.wm.preferences]
-button-layout = 'appmenu:minimize,maximize,close'" > /tmp/meta/usr/share/glib-2.0/schemas/${NAME}-settings.gschema.override
+button-layout = 'appmenu:minimize,maximize,close'" > /tmp/meta/usr/share/glib-2.0/schemas/90_${NAME}-settings.gschema.override
 
 echo '<?xml version="1.0" encoding="UTF-8"?>
 
-<style-scheme name="Arc Darc" id="arc-dark" version="1.0">
+<style-scheme name="Arc Dark" id="arc-dark" version="1.0">
     <author>GameTheory</author>
     <description>A fork of Gedit Material Theme by Maksudur Rahman Maateen</description>
 
