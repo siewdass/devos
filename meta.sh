@@ -43,7 +43,7 @@ dynamic-workspaces=false
 [org.gnome.shell]
 always-show-log-out=true
 disable-extension-version-validation=true
-enabled-extensions = $EXTENSIONS
+enabled-extensions = [ 'dash-to-panel@jderose9.github.com', 'user-theme@gnome-shell-extensions.gcampax.github.com' ]
 favorite-apps = [ 'org.gnome.Nautilus.desktop', 'com.gexperts.Tilix.desktop', 'google-chrome.desktop' ]
 
 [org.gnome.shell.extensions.user-theme]

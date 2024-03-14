@@ -37,5 +37,8 @@ Font
 Peripheral
 - Disable natural scrolling
 
+Others
+- Desktop directory is now home
+
 Removed
 - Snapd
