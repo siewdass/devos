@@ -1,0 +1,9 @@
+Package: devos-desktop
+Version: 0.01
+Architecture: all
+Maintainer: Siewdass Sf <siewdass@gmail.com>
+Installed-Size: 13
+Depends: gir1.2-gmenu-3.0
+Section: metapackages
+Priority: optional
+Description: Devos Meta Package

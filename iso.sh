@@ -27,7 +27,6 @@ sudo chroot /tmp/rootfs mount none -t sysfs /sys
 sudo chroot /tmp/rootfs mount none -t devpts /dev/pts
 
 sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
-sudo cp -r ${CURRENT_DIR}/extensions /tmp/rootfs/tmp
 
 echo SET DEFAULT CONFIGURATIONS
 sudo chroot /tmp/rootfs << EOF
@@ -49,22 +48,6 @@ apt install -y $INSTALL_PACKAGES > /dev/null
 apt remove -y $REMOVE_PACKAGES > /dev/null
 dpkg -i /tmp/packages/*.deb
 apt install -fyq
-EOF
-
-# REMOVE UBUNTU-MONO
-# REMOVE ALL EXTENSIONS FIRST
-echo "INSTALL EXTENSIONS"
-sudo chroot /tmp/rootfs << EOF
-#rm -rf /usr/share/gnome-shell/extensions/*
-#find /tmp/extensions -name "*.zip" -exec gnome-extensions install -f {} \;
-#find /usr/share/gnome-shell/extensions -mindepth 1 -maxdepth 1 -type d -exec gnome enable {} \;
-find /tmp/extensions -name "*.zip" -exec unzip -o {} -d /usr/share/gnome-shell/extensions \;
-
-chmod 777 -R /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com
-cp /usr/share/gnome-shell/extensions/dash-to-panel@jderose9.github.com/schemas/org.gnome.shell.extensions.dash-to-panel.gschema.xml /usr/share/glib-2.0/schemas
-
-#find /usr/share/gnome-shell/extensions -name "*.xml" -exec cp {} /usr/share/glib-2.0/schemas \;
-glib-compile-schemas /usr/share/glib-2.0/schemas
 EOF
 
 echo "CLEAN UP"

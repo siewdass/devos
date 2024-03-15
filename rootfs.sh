@@ -77,6 +77,8 @@ ubiquity-frontend-gtk \
 ubiquity-slideshow-ubuntu \
 ubiquity-ubuntu-artwork 
 
+apt install -y plymouth-theme-ubuntu-logo alsa-base alsa-utils anacron at-spi2-core bc ca-certificates chrome-gnome-shell fonts-cantarell fonts-dejavu-core fonts-freefont-ttf foomatic-db-compressed-ppds gdm3 ghostscript-x gnome-backgrounds gnome-color-manager gnome-control-center gnome-menus gnome-online-accounts gnome-online-miners gnome-session gnome-session-canberra gnome-settings-daemon gnome-shell gnome-themes-extra gnome-user-share gsettings-desktop-schemas gstreamer1.0-alsa gstreamer1.0-plugins-base-apps gstreamer1.0-pulseaudio inputattach libatk-adaptor libnotify-bin libsasl2-modules libu2f-udev mutter network-manager openprinting-ppds printer-driver-pnm2ppa pulseaudio rfkill software-properties-gtk spice-vdagent ssh-askpass-gnome system-config-printer-common system-config-printer-udev tracker ubuntu-drivers-common ubuntu-release-upgrader-gtk unzip update-manager update-notifier wireless-tools wpasupplicant xdg-desktop-portal-gnome xdg-user-dirs xdg-user-dirs-gtk xkb-data xorg zenity zip zsync breeze-cursor-theme arc-theme gnome-bluetooth gnome-calculator gnome-disk-utility nautilus network-manager-openvpn-gnome usb-creator-gtk gedit file-roller gnome-extensions-app
+
 dpkg-reconfigure locales
 dpkg-reconfigure resolvconf
 
