@@ -1,5 +1,5 @@
 [org.gnome.desktop.interface]
-gtk-theme = 'Ark-Dark'
+gtk-theme = 'Arc-Dark'
 icon-theme = 'ubuntu-mono-dark'
 cursor-theme = 'Breeze_Snow'
 font-name = 'Ubuntu 11'
