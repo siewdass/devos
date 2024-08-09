@@ -13,6 +13,30 @@ PACKAGE_REMOVE="
     os-prober \
 "
 
+if mount | grep -q /tmp/rootfs/proc; then
+    sudo chroot /tmp/rootfs umount /proc > /dev/null
+fi
+
+if mount | grep -q /tmp/rootfs/sys; then
+    sudo chroot /tmp/rootfs umount /sys > /dev/null
+fi
+
+if mount | grep -q /tmp/rootfs/dev/pts; then
+    sudo chroot /tmp/rootfs umount /dev/pts > /dev/null
+fi
+
+if mount | grep -q /tmp/rootfs/run; then
+    sudo umount /tmp/rootfs/run > /dev/null
+fi
+
+if mount | grep -q /tmp/rootfs/dev; then
+    sudo umount /tmp/rootfs/dev > /dev/null
+fi
+
+if mount | grep -q /tmp/rootfs; then
+    sudo umount /tmp/rootfs > /dev/null
+fi
+
 sudo rm -rf ${CURRENT_DIR}/*.iso
 
 sudo mkdir -p /tmp/rootfs /tmp/image/{casper,isolinux,install}
@@ -25,8 +49,6 @@ sudo mount --bind /run /tmp/rootfs/run
 sudo chroot /tmp/rootfs mount none -t proc /proc
 sudo chroot /tmp/rootfs mount none -t sysfs /sys
 sudo chroot /tmp/rootfs mount none -t devpts /dev/pts
-
-sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
 
 echo SET DEFAULT CONFIGURATIONS
 sudo chroot /tmp/rootfs << EOF
@@ -44,11 +66,13 @@ EOF
 
 echo INSTALL PACKAGES
 sudo chroot /tmp/rootfs << EOF
-apt install -y $INSTALL_PACKAGES > /dev/null
+apt install -y $INSTALL_PACKAGES
 apt remove -y $REMOVE_PACKAGES > /dev/null
-dpkg -i /tmp/packages/*.deb
-apt install -fyq
 EOF
+
+#sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
+#dpkg -i /tmp/packages/*.deb
+#apt install -fyq
 
 echo "CLEAN UP"
 sudo chroot /tmp/rootfs << EOF
@@ -120,6 +144,7 @@ sudo mksquashfs /tmp/rootfs /tmp/image/casper/filesystem.squashfs \
     -noappend -no-duplicates -no-recovery \
     -wildcards \
     -e "var/cache/apt/archives/*" \
+    -e "var/lib/apt/lists/*" \
     -e "root/*" \
     -e "root/.*" \
     -e "tmp/*" \
@@ -195,12 +220,8 @@ sudo xorriso \
 
 sudo chmod 777 $CURRENT_DIR/$NAME.iso
 
+sleep 1
+
 sudo umount /tmp/rootfs
 
 sudo rm -rf /tmp/rootfs /tmp/image /tmp/rootfs.img
-
-#if find / -name "*.old"; then
-#  find / -name "*.old" -exec rm -f {} \
-#fi
-
-
