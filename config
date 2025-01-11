@@ -1,0 +1,58 @@
+# DISTRIBUTION
+export UBUNTU_CODENAME="noble"
+export UBUNTU_VERSION="24.04.5"
+export UBUNTU_ARCH="amd64"
+export UBUNTU_MIRROR="http://us.archive.ubuntu.com/ubuntu/"
+export NAME="optimus"
+
+# BOOT
+export GRUB_LIVEBOOT_LABEL="Try Ubuntu without installing"
+export GRUB_INSTALL_LABEL="Install Ubuntu"
+
+# APPARENCE
+export SYSTEM_THEME="Arc-Dark"
+export ICON_THEME="Papirus"
+export CURSOR_THEME="Breeze_Snow"
+export FONT_THEME=""
+export SOUND_THEME=""
+
+# PACKAGES
+export KERNEL_PACKAGE="linux-generic"
+export PERSONAL_PACKAGE_ARCHVES="ppa:elementary-os/stable"
+export INSTALL_PACKAGES="dconf-editor gedit io.elementary.greeter pantheon-shell wingpanel gala slingshot-launcher pantheon-files io.elementary.dock wingpanel-indicator-* io.elementary.settings* plymouth-theme-elementary breeze-cursor-theme arc-theme papirus-icon-theme io.elementary.sound-theme io.elementary.bluetooth-daemon io.elementary.quick-settings io.elementary.screenshot"
+export REMOVE_PACKAGES="zutty"
+
+# ENERGY
+export BATTERY_MAX="100"
+export BATTERY_LOW="20"
+export BATTERY_CRITICAL="5"
+
+#sudo nano /etc/UPower/UPower.conf
+#export INSTALL_FLATPAK="io.github.pantheon_tweaks.pantheon-tweaks"
+
+#if [ -n "$INSTALL_FLATPAK" ]; then
+#    flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+#    flatpak update -y
+#    flatpak install -y flathub $INSTALL_FLATPAK
+#fi
+
+#echo SET APPARENCE
+#sudo chroot /tmp/rootfs << EOF
+#if [ -n "$SYSTEM_THEME" ]; then
+#    gsettings set org.gnome.desktop.interface gtk-theme "$SYSTEM_THEME"
+#    gsettings set org.gnome.desktop.wm.preferences theme "$SYSTEM_THEME"
+#fi
+#if [ -n "$ICON_THEME" ]; then
+#    gsettings set org.gnome.desktop.interface icon-theme "$ICON_THEME"
+#fi
+#if [ -n "$CURSOR_THEME" ]; then
+#    gsettings set org.gnome.desktop.interface cursor-theme "$CURSOR_THEME"
+#fi
+#gsettings set net.launchpad.plank.dock.settings:/net/launchpad/plank/docks/dock1/ position 'left'
+#EOF
+
+#sudo cp -r ${CURRENT_DIR}/packages /tmp/rootfs/tmp
+#dpkg -i /tmp/packages/*.deb
+#apt install -fyq
+
+#maybe install burg

@@ -1,9 +1,0 @@
-Package: meta-desktop
-Version: 0.01
-Architecture: all
-Maintainer: Siewdass Sf <siewdass@gmail.com>
-Installed-Size: 13
-Depends: breeze-cursor-theme, arc-theme, gnome-calculator, gnome-disk-utility, nautilus, network-manager-openvpn-gnome, gedit, file-roller, ubuntu-drivers-common, software-properties-gtk, ubuntu-release-upgrader-gtk, update-manager, update-notifier, gnome-system-monitor, gir1.2-adw-1, gir1.2-gtk-4.0, gjs, gnome-control-center
-Section: metapackages
-Priority: optional
-Description: Meta Package

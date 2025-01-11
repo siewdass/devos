@@ -1,3 +1,11 @@
+Scripts run order
+- deps
+- rootfs
+- iso
+- run
+
+W: No zstd in /usr/bin:/sbin:/bin, using gzip
+
 Energy
 - Enhance with auto-cpufreq and tlp
 
@@ -12,10 +20,9 @@ Boot
 - Based on hibernation ( vmlinuz or swapfile )
 
 Environment Desktop
-- Vanilla Gnome Desktop
+- Minimal pantheon desktop
 
 Apt
-- Updates only manual
 - Disable recomends and suggested 
 
 Compression
